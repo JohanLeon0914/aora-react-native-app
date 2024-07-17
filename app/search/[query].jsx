@@ -3,7 +3,7 @@ import {
   Text,
   FlatList,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
