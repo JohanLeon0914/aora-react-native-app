@@ -1,17 +1,30 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { icons } from "../constants";
 import { useState } from "react";
 import { ResizeMode, Video } from "expo-av";
+import { setBookmark } from "../lib/appwrite";
 
 const VideoCard = ({
   video: {
+    $id,
     title,
     thumbnail,
     video,
+    bookmark,
     creator: { username, avatar },
   },
 }) => {
   const [play, setPlay] = useState(false);
+  const [manageBookmark, setManageBookmark] = useState(bookmark);
+
+  const markVideo = async() => {
+    try {
+      await setBookmark($id, !manageBookmark);
+      setManageBookmark(!manageBookmark);
+    } catch (error) {
+      Alert("Error",  error.message);
+    }
+  }
 
   return (
     <View className="flex-col items-center px-4 mb-14">
@@ -40,9 +53,17 @@ const VideoCard = ({
             </Text>
           </View>
         </View>
-        <View className="pt-2">
-          <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
-        </View>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={markVideo}
+          className={`pt-2 ${manageBookmark && 'bg-secondary' }`}
+        >
+          <Image
+            source={icons.bookmark}
+            className="w-5 h-5"
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
 
       {play ? (

@@ -1,7 +1,5 @@
-import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
-import React, { useEffect } from "react";
+import { View, FlatList, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
 import { getUserPosts, signOut } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
