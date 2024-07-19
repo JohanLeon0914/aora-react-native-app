@@ -3,6 +3,7 @@ import { icons } from "../constants";
 import { useState } from "react";
 import { ResizeMode, Video } from "expo-av";
 import { setBookmark } from "../lib/appwrite";
+import { useDispatch, useSelector } from 'react-redux';
 
 const VideoCard = ({
   video: {
@@ -17,10 +18,14 @@ const VideoCard = ({
   const [play, setPlay] = useState(false);
   const [manageBookmark, setManageBookmark] = useState(bookmark);
 
+  const dispatch = useDispatch();
+  const refresh = useSelector(state => state.refresh);
+
   const markVideo = async() => {
     try {
       await setBookmark($id, !manageBookmark);
       setManageBookmark(!manageBookmark);
+      dispatch({ type: 'REFRESH' })
     } catch (error) {
       Alert("Error",  error.message);
     }

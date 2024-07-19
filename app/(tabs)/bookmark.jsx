@@ -5,20 +5,20 @@ import { getUserMarkPosts, signOut } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
 import VideoCard from "../../components/VideoCard";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { router } from "expo-router";
 import { useEffect } from "react";
-import SearchInput from "../../components/SearchInput";
+import { useSelector } from 'react-redux';
 
 const Bookmark = () => {
-  const { user, setUser, setIsLoggedIn } = useGlobalContext();
+  const { user } = useGlobalContext();
+  const refresh = useSelector(state => state.refresh);
 
   const { data: posts, refetch } = useAppwrite(() =>
     getUserMarkPosts(user.$id)
   );
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [query]);
+  useEffect(() => {
+    refetch();
+  }, [refresh]);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -26,11 +26,6 @@ const Bookmark = () => {
         data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => <VideoCard video={item} />}
-        ListHeaderComponent={() => (
-          <View className="my-6 px-4 space-y-6">
-            {/* <SearchInput /> */}
-          </View>
-        )}
         ListEmptyComponent={() => (
           <EmptyState
             title="No Videos Marked"

@@ -1,5 +1,5 @@
 import { View, Text, FlatList, Image, RefreshControl, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import SearchInput from '../../components/SearchInput'
@@ -9,7 +9,7 @@ import { getAllPosts, getLatestPosts } from '../../lib/appwrite'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import { useGlobalContext } from '../../context/GlobalProvider'
-import { icons } from "../../constants";
+import { useSelector } from 'react-redux'
 
 const Home = () => {
 
@@ -18,6 +18,13 @@ const Home = () => {
   const { user } = useGlobalContext();
 
   const [refreshing, setRefreshing] = useState(false);
+
+  const refresh = useSelector(state => state.refresh);
+
+  useEffect(() => {
+    refetch();
+    console.log(posts[0]?.bookmark)
+  }, [refresh]);
 
   const onRefresh = async() => {
     setRefreshing(true)
